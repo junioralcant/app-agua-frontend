@@ -12,10 +12,10 @@ export default function Sidebar() {
           </li>
           <br></br>
           <li>
-            <a href="#">Pedidos</a>
+            <a href="/">Pedidos</a>
           </li>
           <li>
-            <a>Financeiro</a>
+            <a href="/financeiro">Financeiro</a>
           </li>
         </Nav>
       </div>

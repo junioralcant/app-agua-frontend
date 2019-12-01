@@ -16,6 +16,20 @@ export default function Pedidos() {
         <input type="text" name="nome" placeholder="Pesquisar por nome" />
         <input type="date" name="dataInicio" placeholder="Data início" />
         <input type="date" name="dataFim" placeholder="Data fim" />
+        <Dados>
+          <strong>
+            Quantidade de Pedidos: <small>100</small>
+          </strong>
+          <strong>
+            Número de páginas: <small>49</small>
+          </strong>
+          <strong>
+            Página atual: <small>9</small>
+          </strong>
+          <strong className="total">
+            Valor total: <small className="total">600 R$</small>
+          </strong>
+        </Dados>
       </Pesquisa>
       <ContainerPedidos>
         <PedidosList>
@@ -253,17 +267,7 @@ export default function Pedidos() {
       </ContainerPedidos>
       <Footer>
         <button>Anterior</button>
-        <Dados>
-          <strong>
-            Quantidade de Pedidos: <small>100</small>
-          </strong>
-          <strong>
-            Número de páginas: <small>49</small>
-          </strong>
-          <strong>
-            Página atual: <small>9</small>
-          </strong>
-        </Dados>
+
         <button>Próximo</button>
       </Footer>
     </Container>
