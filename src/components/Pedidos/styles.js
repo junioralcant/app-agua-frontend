@@ -25,6 +25,25 @@ export const Pesquisa = styled.div`
     color: #444;
     border-radius: 3px;
   }
+
+  button {
+    margin: 10px 0;
+    height: 55px;
+    font-size: 12px;
+    font-weight: bold;
+    background: #7289da;
+    border-radius: 3px;
+    border: 0;
+    color: #fff;
+    padding: 0 10px;
+    text-transform: uppercase;
+
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background: #5f73bc;
+    }
+  }
 `;
 
 export const ContainerPedidos = styled.div`

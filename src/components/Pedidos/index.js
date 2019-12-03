@@ -17,6 +17,8 @@ export default function Pedidos() {
   const [pedidos, setPedidos] = useState([]);
   const [pedidosInfo, setPedidosInfo] = useState([]);
   const [numberPage, setNumberPage] = useState(1);
+  const [dataMin, setDataMin] = useState("");
+  const [dataMax, setDataMax] = useState("");
 
   useEffect(() => {
     async function loadPedidos(page = numberPage) {
@@ -40,6 +42,33 @@ export default function Pedidos() {
     }
   }
 
+  async function filterData() {
+    const response = await api.get(
+      `/pedidos?data_min=${dataMin}&data_max=${dataMax}`
+    );
+    const { docs, ...pedidoResto } = response.data;
+    setPedidos(docs);
+    setPedidosInfo(pedidoResto);
+  }
+  function filterDataMin(e) {
+    if (e.target.value !== "") {
+      setDataMin(e.target.value);
+    } else {
+      setDataMin("");
+    }
+  }
+
+  function filterDataMax(e) {
+    if (e.target.value !== "") {
+      setDataMax(e.target.value);
+    } else {
+      setDataMax("");
+    }
+  }
+
+  console.log(dataMin);
+  console.log(dataMax);
+
   function pagePrevious() {
     if (numberPage === 1) return;
     const numberOfPages = numberPage - 1;
@@ -61,8 +90,19 @@ export default function Pedidos() {
           placeholder="Pesquisar por nome"
           onChange={filterNome}
         />
-        <input type="date" name="dataInicio" placeholder="Data início" />
-        <input type="date" name="dataFim" placeholder="Data fim" />
+        <input
+          type="date"
+          name="dataInicio"
+          placeholder="Data início"
+          onChange={filterDataMin}
+        />
+        <input
+          type="date"
+          name="dataFim"
+          placeholder="Data fim"
+          onChange={filterDataMax}
+        />
+        <button onClick={filterData}>Pesquisar</button>
       </Pesquisa>
       <ContainerPedidos>
         {pedidos.map(pedido => {
