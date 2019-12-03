@@ -30,6 +30,16 @@ export default function Pedidos() {
     loadPedidos();
   }, [numberPage]);
 
+  async function filterNome(e) {
+    if (e.target.value !== "") {
+      const response = await api.get(`/pedidos?nome=${e.target.value}`);
+      setPedidos(response.data.docs);
+    } else {
+      const response = await api.get("/pedidos");
+      setPedidos(response.data.docs);
+    }
+  }
+
   function pagePrevious() {
     if (numberPage === 1) return;
     const numberOfPages = numberPage - 1;
@@ -45,7 +55,12 @@ export default function Pedidos() {
   return (
     <Container>
       <Pesquisa>
-        <input type="text" name="nome" placeholder="Pesquisar por nome" />
+        <input
+          type="text"
+          name="filterNome"
+          placeholder="Pesquisar por nome"
+          onChange={filterNome}
+        />
         <input type="date" name="dataInicio" placeholder="Data início" />
         <input type="date" name="dataFim" placeholder="Data fim" />
       </Pesquisa>
