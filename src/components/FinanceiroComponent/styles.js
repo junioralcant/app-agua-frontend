@@ -159,3 +159,28 @@ export const Dados = styled.div`
     }
   }
 `;
+export const DadosFooter = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid #fff;
+  border-radius: 3px;
+  padding: 10px;
+
+  strong {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+
+    small {
+      color: #fff;
+      font-weight: bold;
+      font-size: 15px;
+      border: 1px solid #fff;
+      border-radius: 3px;
+      padding: 2px;
+      margin-left: 5px;
+      margin-top: 2px;
+    }
+  }
+`;
