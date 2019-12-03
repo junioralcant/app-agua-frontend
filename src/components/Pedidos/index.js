@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
+import { pt } from "date-fns/locale/pt";
+
+import api from "../../services/api";
 
 import {
   Container,
@@ -10,6 +14,34 @@ import {
 } from "./styles";
 
 export default function Pedidos() {
+  const [pedidos, setPedidos] = useState([]);
+  const [pedidosInfo, setPedidosInfo] = useState([]);
+  const [numberPage, setNumberPage] = useState(1);
+
+  useEffect(() => {
+    async function loadPedidos(page = numberPage) {
+      const response = await api.get(`/pedidos?page=${page}`);
+      const { docs, ...pedidoResto } = response.data;
+
+      setPedidos(docs);
+      setPedidosInfo(pedidoResto);
+    }
+
+    loadPedidos();
+  }, [numberPage]);
+
+  function pagePrevious() {
+    if (numberPage === 1) return;
+    const numberOfPages = numberPage - 1;
+    setNumberPage(numberOfPages);
+  }
+
+  function pageNext() {
+    if (numberPage === pedidosInfo.pages) return;
+    const numberOfPages = numberPage + 1;
+
+    setNumberPage(numberOfPages);
+  }
   return (
     <Container>
       <Pesquisa>
@@ -18,253 +50,64 @@ export default function Pedidos() {
         <input type="date" name="dataFim" placeholder="Data fim" />
       </Pesquisa>
       <ContainerPedidos>
-        <PedidosList>
-          <header>
-            <strong>Nome do cliente</strong>
-            <small>03 de novenbro às 09 horas</small>
-          </header>
+        {pedidos.map(pedido => {
+          const dataPedido = format(pedido.createdAt, "DD-MM-YYYY H:mm", {
+            locale: pt
+          });
 
-          <ul>
-            <li>
-              Quantidade <small>4 Agua(s)</small>
-            </li>
-            <li>
-              Valor <small>28,00 R$</small>
-            </li>
-            <li>
-              Endereço
+          return (
+            <PedidosList key={pedido._id}>
+              <header>
+                <strong>{pedido.cliente.nome}</strong>
+                <small>{dataPedido}</small>
+              </header>
               <ul>
                 <li>
-                  Rua <small>Rua da graça</small>
+                  Quantidade
+                  <small>
+                    {pedido.quantidade} {pedido.produto.nome}
+                  </small>
                 </li>
                 <li>
-                  Bairro <small>Toca da Raposa</small>
+                  Valor <small>{pedido.valorTotal} R$</small>
                 </li>
                 <li>
-                  Número <small>394</small>
+                  Endereço
+                  {pedido.enderecoEntrega.map(end => {
+                    return (
+                      <ul key={end._id}>
+                        <li>
+                          Rua <small>{end.rua}</small>
+                        </li>
+                        <li>
+                          Bairro <small>{end.bairro}</small>
+                        </li>
+                        <li>
+                          Número <small>{end.numeroCasa}</small>
+                        </li>
+                      </ul>
+                    );
+                  })}
                 </li>
               </ul>
-            </li>
-          </ul>
-        </PedidosList>
-        <PedidosList>
-          <header>
-            <string>Nome do cliente</string>
-            <small>03 de novenbro às 09 horas</small>
-          </header>
-
-          <ul>
-            <li>
-              Quantidade <small>4 Agua(s)</small>
-            </li>
-            <li>
-              Valor <small>28,00 R$</small>
-            </li>
-            <li>
-              Endereço
-              <ul>
-                <li>
-                  Rua <small>Rua da graça</small>
-                </li>
-                <li>
-                  Bairro <small>Toca da Raposa</small>
-                </li>
-                <li>
-                  Número <small>394</small>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </PedidosList>
-        <PedidosList>
-          <header>
-            <string>Nome do cliente</string>
-            <small>03 de novenbro às 09 horas</small>
-          </header>
-
-          <ul>
-            <li>
-              Quantidade <small>4 Agua(s)</small>
-            </li>
-            <li>
-              Valor <small>28,00 R$</small>
-            </li>
-            <li>
-              Endereço
-              <ul>
-                <li>
-                  Rua <small>Rua da graça</small>
-                </li>
-                <li>
-                  Bairro <small>Toca da Raposa</small>
-                </li>
-                <li>
-                  Número <small>394</small>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </PedidosList>
-        <PedidosList>
-          <header>
-            <string>Nome do cliente</string>
-            <small>03 de novenbro às 09 horas</small>
-          </header>
-
-          <ul>
-            <li>
-              Quantidade <small>4 Agua(s)</small>
-            </li>
-            <li>
-              Valor <small>28,00 R$</small>
-            </li>
-            <li>
-              Endereço
-              <ul>
-                <li>
-                  Rua <small>Rua da graça</small>
-                </li>
-                <li>
-                  Bairro <small>Toca da Raposa</small>
-                </li>
-                <li>
-                  Número <small>394</small>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </PedidosList>
-        <PedidosList>
-          <header>
-            <string>Nome do cliente</string>
-            <small>03 de novenbro às 09 horas</small>
-          </header>
-
-          <ul>
-            <li>
-              Quantidade <small>4 Agua(s)</small>
-            </li>
-            <li>
-              Valor <small>28,00 R$</small>
-            </li>
-            <li>
-              Endereço
-              <ul>
-                <li>
-                  Rua <small>Rua da graça</small>
-                </li>
-                <li>
-                  Bairro <small>Toca da Raposa</small>
-                </li>
-                <li>
-                  Número <small>394</small>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </PedidosList>
-        <PedidosList>
-          <header>
-            <string>Nome do cliente</string>
-            <small>03 de novenbro às 09 horas</small>
-          </header>
-
-          <ul>
-            <li>
-              Quantidade <small>4 Agua(s)</small>
-            </li>
-            <li>
-              Valor <small>28,00 R$</small>
-            </li>
-            <li>
-              Endereço
-              <ul>
-                <li>
-                  Rua <small>Rua da graça</small>
-                </li>
-                <li>
-                  Bairro <small>Toca da Raposa</small>
-                </li>
-                <li>
-                  Número <small>394</small>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </PedidosList>
-        <PedidosList>
-          <header>
-            <string>Nome do cliente</string>
-            <small>03 de novenbro às 09 horas</small>
-          </header>
-
-          <ul>
-            <li>
-              Quantidade <small>4 Agua(s)</small>
-            </li>
-            <li>
-              Valor <small>28,00 R$</small>
-            </li>
-            <li>
-              Endereço
-              <ul>
-                <li>
-                  Rua <small>Rua da graça</small>
-                </li>
-                <li>
-                  Bairro <small>Toca da Raposa</small>
-                </li>
-                <li>
-                  Número <small>394</small>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </PedidosList>
-        <PedidosList>
-          <header>
-            <string>Nome do cliente</string>
-            <small>03 de novenbro às 09 horas</small>
-          </header>
-
-          <ul>
-            <li>
-              Quantidade <small>4 Agua(s)</small>
-            </li>
-            <li>
-              Valor <small>28,00 R$</small>
-            </li>
-            <li>
-              Endereço
-              <ul>
-                <li>
-                  Rua <small>Rua da graça</small>
-                </li>
-                <li>
-                  Bairro <small>Toca da Raposa</small>
-                </li>
-                <li>
-                  Número <small>394</small>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </PedidosList>
+            </PedidosList>
+          );
+        })}
       </ContainerPedidos>
       <Footer>
-        <button>Anterior</button>
+        <button onClick={pagePrevious}>Anterior</button>
         <Dados>
           <strong>
-            Quantidade de Pedidos: <small>100</small>
+            Quantidade de Pedidos: <small>{pedidosInfo.total}</small>
           </strong>
           <strong>
-            Número de páginas: <small>49</small>
+            Número de páginas: <small>{pedidosInfo.pages}</small>
           </strong>
           <strong>
-            Página atual: <small>9</small>
+            Página atual: <small>{pedidosInfo.page}</small>
           </strong>
         </Dados>
-        <button>Próximo</button>
+        <button onClick={pageNext}>Próximo</button>
       </Footer>
     </Container>
   );

@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 
 import SingIn from "./pages/SignIn";
 import Main from "./pages/Main";
-import Financeiro from "./components/Financeiro";
+import Financeiro from "./pages/Financeiro";
 
 const Routes = () => (
   <Switch>
