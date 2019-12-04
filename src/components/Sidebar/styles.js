@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.aside`
   height: 100;
-  width: 250px;
+  width: 200px;
   background: #121212;
   color: #b3b3b3;
 

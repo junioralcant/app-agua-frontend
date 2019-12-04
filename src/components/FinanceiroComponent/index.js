@@ -10,13 +10,16 @@ import {
   Pesquisa,
   Footer,
   Dados,
-  DadosFooter
+  DadosFooter,
+  Content
 } from "./styles";
 
 export default function Pedidos() {
   const [pedidos, setPedidos] = useState([]);
   const [pedidosInfo, setPedidosInfo] = useState([]);
   const [numberPage, setNumberPage] = useState(1);
+  const [dataMin, setDataMin] = useState("");
+  const [dataMax, setDataMax] = useState("");
 
   useEffect(() => {
     async function loadPedidos(page = numberPage) {
@@ -30,6 +33,47 @@ export default function Pedidos() {
     loadPedidos();
   }, [numberPage]);
 
+  async function filterNome(e) {
+    if (e.target.value !== "") {
+      const response = await api.get(`/pedidos?nome=${e.target.value}`);
+      setPedidos(response.data.docs);
+    } else {
+      const response = await api.get("/pedidos");
+      setPedidos(response.data.docs);
+    }
+  }
+
+  async function filterData() {
+    if (dataMin !== "" || dataMax !== "") {
+      const response = await api.get(
+        `/pedidos?data_min=${dataMin}&data_max=${dataMax}`
+      );
+      const { docs, ...pedidoResto } = response.data;
+      setPedidos(docs);
+      setPedidosInfo(pedidoResto);
+    } else {
+      const response = await api.get("/pedidos");
+      const { docs, ...pedidoResto } = response.data;
+      setPedidos(docs);
+      setPedidosInfo(pedidoResto);
+    }
+  }
+  function filterDataMin(e) {
+    if (e.target.value !== "") {
+      setDataMin(e.target.value);
+    } else {
+      setDataMin("");
+    }
+  }
+
+  function filterDataMax(e) {
+    if (e.target.value !== "") {
+      setDataMax(e.target.value);
+    } else {
+      setDataMax("");
+    }
+  }
+
   function pagePrevious() {
     if (numberPage === 1) return;
     const numberOfPages = numberPage - 1;
@@ -42,21 +86,50 @@ export default function Pedidos() {
 
     setNumberPage(numberOfPages);
   }
+
+  // Soma os valores de totos os pedidos
+  const valorTotal = pedidos.reduce(
+    (valorTotal, valor) => valorTotal + valor.valorTotal,
+    0
+  );
   return (
     <Container>
       <Pesquisa>
-        <input type="text" name="nome" placeholder="Pesquisar por nome" />
-        <input type="date" name="dataInicio" placeholder="Data início" />
-        <input type="date" name="dataFim" placeholder="Data fim" />
+        <input
+          type="text"
+          name="nome"
+          placeholder="Pesquisar por nome"
+          onChange={filterNome}
+        />
+        <input
+          type="date"
+          name="dataInicio"
+          placeholder="Data início"
+          onChange={filterDataMin}
+        />
+        <input
+          type="date"
+          name="dataFim"
+          placeholder="Data fim"
+          onChange={filterDataMax}
+        />
+        <button onClick={filterData}>Pequisar</button>
+
+        <Dados style={{ background: "none" }}>
+          <span></span>
+        </Dados>
         <Dados>
-          <strong>
-            Quantidade de Pedidos: <small>{pedidosInfo.total}</small>
-          </strong>
-          <strong className="total">
-            Valor total: <small className="total">600 R$</small>
-          </strong>
+          <div>
+            <strong>
+              Quantidade de Pedidos: <small>{pedidosInfo.total}</small>
+            </strong>
+            <strong className="total">
+              Valor total: <small className="total">{valorTotal} R$</small>
+            </strong>
+          </div>
         </Dados>
       </Pesquisa>
+
       <ContainerPedidos>
         {pedidos.map(pedido => {
           const dataPedido = format(pedido.createdAt, "DD-MM-YYYY H:mm", {

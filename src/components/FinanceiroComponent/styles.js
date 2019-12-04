@@ -25,6 +25,26 @@ export const Pesquisa = styled.div`
     color: #444;
     border-radius: 3px;
   }
+
+  button {
+    margin: 10px 0;
+    margin-left: 10px;
+    height: 55px;
+    font-size: 12px;
+    font-weight: bold;
+    background: #7289da;
+    border-radius: 3px;
+    border: 0;
+    color: #fff;
+    padding: 0 10px;
+    text-transform: uppercase;
+
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background: #5f73bc;
+    }
+  }
 `;
 
 export const ContainerPedidos = styled.div`
@@ -120,6 +140,12 @@ export const Footer = styled.div`
       background: #5f73bc;
     }
   }
+`;
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between !important;
 `;
 
 export const Dados = styled.div`

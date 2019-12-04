@@ -66,9 +66,6 @@ export default function Pedidos() {
     }
   }
 
-  console.log(dataMin);
-  console.log(dataMax);
-
   function pagePrevious() {
     if (numberPage === 1) return;
     const numberOfPages = numberPage - 1;
@@ -81,6 +78,10 @@ export default function Pedidos() {
 
     setNumberPage(numberOfPages);
   }
+
+  // Soma os valores de totos os pedidos
+  const total = pedidos.reduce((total, valor) => total + valor.valorTotal, 0);
+
   return (
     <Container>
       <Pesquisa>
