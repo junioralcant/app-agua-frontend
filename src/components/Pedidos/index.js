@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { pt } from "date-fns/locale/pt";
+import { IoMdTrash } from "react-icons/io";
 
 import api from "../../services/api";
 
@@ -66,6 +67,15 @@ export default function Pedidos() {
     }
   }
 
+  async function destroy(id) {
+    await api.delete(`pedidos/${id}`);
+
+    const response = await api.get("/pedidos");
+    const { docs, ...pedidoResto } = response.data;
+    setPedidos(docs);
+    setPedidosInfo(pedidoResto);
+  }
+
   function pagePrevious() {
     if (numberPage === 1) return;
     const numberOfPages = numberPage - 1;
@@ -78,9 +88,6 @@ export default function Pedidos() {
 
     setNumberPage(numberOfPages);
   }
-
-  // Soma os valores de totos os pedidos
-  const total = pedidos.reduce((total, valor) => total + valor.valorTotal, 0);
 
   return (
     <Container>
@@ -114,6 +121,18 @@ export default function Pedidos() {
           return (
             <PedidosList key={pedido._id}>
               <header>
+                <button
+                  onClick={e => {
+                    if (
+                      window.confirm(
+                        `Deseja realmente deletar o pedido do(a) cliente ${pedido.cliente.nome}?`
+                      )
+                    )
+                      destroy(pedido._id);
+                  }}
+                >
+                  <IoMdTrash />
+                </button>
                 <strong>{pedido.cliente.nome}</strong>
                 <small>{dataPedido}</small>
               </header>

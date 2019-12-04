@@ -69,6 +69,15 @@ export const PedidosList = styled.div`
       background: #63f5b0;
       color: #000;
 
+      button {
+        color: #000;
+        transition: 0.15s ease;
+
+        &:hover {
+          color: #646262;
+        }
+      }
+
       small {
         color: #000;
       }
@@ -82,6 +91,17 @@ export const PedidosList = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    button {
+      color: #fff;
+      background: none;
+      border: none;
+      font-size: 16px;
+      transition: 0.15s ease;
+      &:hover {
+        color: #d9d9d9;
+      }
+    }
 
     strong {
       font-size: 15px;

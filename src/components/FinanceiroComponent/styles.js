@@ -73,6 +73,17 @@ export const PedidosList = styled.div`
     flex-direction: column;
     align-items: center;
 
+    button {
+      color: #fff;
+      background: none;
+      border: none;
+      font-size: 16px;
+      transition: 0.15s ease;
+      &:hover {
+        color: #d9d9d9;
+      }
+    }
+
     strong {
       font-size: 15px;
     }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { pt } from "date-fns/locale/pt";
+import { IoMdTrash } from "react-icons/io";
 
 import api from "../../services/api";
 import {
@@ -10,8 +11,7 @@ import {
   Pesquisa,
   Footer,
   Dados,
-  DadosFooter,
-  Content
+  DadosFooter
 } from "./styles";
 
 export default function Pedidos() {
@@ -74,6 +74,15 @@ export default function Pedidos() {
     }
   }
 
+  async function destroy(id) {
+    await api.delete(`pedidos/${id}`);
+
+    const response = await api.get("/pedidos");
+    const { docs, ...pedidoResto } = response.data;
+    setPedidos(docs);
+    setPedidosInfo(pedidoResto);
+  }
+
   function pagePrevious() {
     if (numberPage === 1) return;
     const numberOfPages = numberPage - 1;
@@ -92,6 +101,7 @@ export default function Pedidos() {
     (valorTotal, valor) => valorTotal + valor.valorTotal,
     0
   );
+
   return (
     <Container>
       <Pesquisa>
@@ -138,32 +148,44 @@ export default function Pedidos() {
           return (
             <PedidosList key={pedido._id}>
               <header>
+                <button
+                  onClick={e => {
+                    if (
+                      window.confirm(
+                        `Deseja realmente deletar o pedido do(a) cliente ${pedido.cliente.nome}?`
+                      )
+                    )
+                      destroy(pedido._id);
+                  }}
+                >
+                  <IoMdTrash />
+                </button>
                 <strong>{pedido.cliente.nome}</strong>
                 <small>{dataPedido}</small>
               </header>
               <ul>
                 <li>
-                  Quantidade
+                  Quantidade:{" "}
                   <small>
                     {pedido.quantidade} {pedido.produto.nome}
                   </small>
                 </li>
                 <li>
-                  Valor <small>{pedido.valorTotal} R$</small>
+                  Valor: <small> {pedido.valorTotal} R$</small>
                 </li>
                 <li>
-                  Endereço
+                  Endereço{" "}
                   {pedido.enderecoEntrega.map(end => {
                     return (
                       <ul key={end._id}>
                         <li>
-                          Rua <small>{end.rua}</small>
+                          Rua: <small>{end.rua}</small>
                         </li>
                         <li>
-                          Bairro <small>{end.bairro}</small>
+                          Bairro: <small>{end.bairro}</small>
                         </li>
                         <li>
-                          Número <small>{end.numeroCasa}</small>
+                          Número: <small>{end.numeroCasa}</small>
                         </li>
                       </ul>
                     );
