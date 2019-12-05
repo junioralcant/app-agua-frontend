@@ -96,7 +96,7 @@ export default function Pedidos() {
     setNumberPage(numberOfPages);
   }
 
-  // Soma os valores de totos os pedidos
+  // Soma os valores de todos os pedidos
   const valorTotal = pedidos.reduce(
     (valorTotal, valor) => valorTotal + valor.valorTotal,
     0

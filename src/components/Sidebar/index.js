@@ -1,8 +1,12 @@
 import React from "react";
-
+import { logout } from "../../services/auth";
 import { Container, Sair, Nav } from "./styles";
 
 export default function Sidebar() {
+  function sair() {
+    window.location.href = "/signin";
+    logout();
+  }
   return (
     <Container>
       <div>
@@ -19,7 +23,7 @@ export default function Sidebar() {
           </li>
         </Nav>
       </div>
-      <Sair>Sair</Sair>
+      <Sair onClick={sair}>Sair</Sair>
     </Container>
   );
 }
