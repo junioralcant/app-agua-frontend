@@ -21,6 +21,9 @@ export default function Sidebar() {
           <li>
             <a href="/financeiro">Financeiro</a>
           </li>
+          <li>
+            <a href="/produto">Cad Produtos</a>
+          </li>
         </Nav>
       </div>
       <Sair onClick={sair}>Sair</Sair>
