@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { isAuthenticated } from "./services/auth";
 
 import SingIn from "./pages/SignIn";
@@ -26,9 +26,11 @@ const Routes = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/signin" component={SingIn} />
+
       <PrivateRoute path="/" exact component={Main} />
       <PrivateRoute path="/financeiro" component={Financeiro} />
-      <PrivateRoute path="/produto" component={Produto} />
+      <PrivateRoute exact path="/produto" component={Produto} />
+      <PrivateRoute path="/produto/edit/:id" component={Produto} />
     </Switch>
   </BrowserRouter>
 );

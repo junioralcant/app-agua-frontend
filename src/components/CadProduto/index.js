@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Input, Form } from "unform";
-import { IoMdTrash } from "react-icons/io";
+import { IoMdTrash, IoMdCreate } from "react-icons/io";
+import { Link } from "react-router-dom";
+
 import { Container, Register, List, PedidosList, Content } from "./styles";
 import Select from "react-select";
 import api from "../../services/api";
@@ -30,15 +32,17 @@ export default function CadProduto({ history, match }) {
           setError(error.response.data.error);
         }
       }
-    } //else {
-    //   try {
-    //     //data.categoria = categoriaId;
-    //     await api.postOrPut("/produtos", match.params.id, data);
-    //     history.push("/produto"); // redireciona o user
-    //   } catch (error) {
-    //     setError(error.response.data.error);
-    //   }
-    // }
+    } else {
+      try {
+        data.categoria = categoriaId;
+        await api.postOrPut("/produtos", match.params.id, data);
+
+        history.push("/produto");
+        history.go(0);
+      } catch (error) {
+        setError(error.response.data.error);
+      }
+    }
   }
 
   useEffect(() => {
@@ -62,6 +66,22 @@ export default function CadProduto({ history, match }) {
 
     loadCategoria();
   }, []);
+
+  // update
+  useEffect(() => {
+    async function loadData() {
+      if (match.params.id) {
+        const { id } = match.params;
+        const response = await api.get(`/produtos/${id}`);
+
+        setData(response.data);
+      }
+    }
+
+    if (match.params.id) {
+      loadData();
+    }
+  }, [match.params, match.params.id]);
 
   function handleSelectChange(cat) {
     setCategoriaId(cat);
@@ -97,7 +117,6 @@ export default function CadProduto({ history, match }) {
         <header>
           <h1>Cadrastro de produtos</h1>
         </header>
-
         <Register>
           <Form className="form" initialData={data} onSubmit={handlerSubmit}>
             {error && <p>{error}</p>}
@@ -107,7 +126,6 @@ export default function CadProduto({ history, match }) {
             {/* <Input name="categoria" label="Cad" /> */}
             <span>Categoria</span>
             <Select
-              label="Categoria"
               options={categorias}
               defaultInputValue={(categorias.value = categorias.nome)}
               styles={colourStyle}
@@ -137,6 +155,12 @@ export default function CadProduto({ history, match }) {
                   >
                     <IoMdTrash />
                   </button>
+                  <Link
+                    to={`/produto/edit/${produto._id}`}
+                    style={{ color: "#fff" }}
+                  >
+                    <IoMdCreate />
+                  </Link>
                   <strong> {produto.nome}</strong>
                 </header>
                 <ul>
@@ -147,7 +171,7 @@ export default function CadProduto({ history, match }) {
                     Categoria: <small> {produto.categoria.nome}</small>
                   </li>
                   <li>
-                    Valor unidade: <small> {produto.preco}</small>
+                    Valor unidade: <small> {produto.preco} R$</small>
                   </li>
                 </ul>
               </PedidosList>
