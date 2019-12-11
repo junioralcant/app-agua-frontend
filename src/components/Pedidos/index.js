@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { pt } from "date-fns/locale/pt";
 import { IoMdTrash } from "react-icons/io";
+import io from "socket.io-client";
 
 import api from "../../services/api";
 
@@ -14,7 +15,7 @@ import {
   Dados
 } from "./styles";
 
-export default function Pedidos() {
+export default function Pedidos({ match }) {
   const [pedidos, setPedidos] = useState([]);
   const [pedidosInfo, setPedidosInfo] = useState([]);
   const [numberPage, setNumberPage] = useState(1);
@@ -32,6 +33,22 @@ export default function Pedidos() {
 
     loadPedidos();
   }, [numberPage]);
+
+  useEffect(() => {
+    const socket = io("http://localhost:3001");
+
+    socket.on("createPedido", message => {
+      async function load() {
+        const response = await api.get(`/pedidos`);
+        const { docs, ...pedidoResto } = response.data;
+
+        setPedidos(docs);
+        setPedidosInfo(pedidoResto);
+      }
+
+      load();
+    });
+  }, []);
 
   async function filterNome(e) {
     if (e.target.value !== "") {
@@ -138,13 +155,13 @@ export default function Pedidos() {
               </header>
               <ul>
                 <li>
-                  Quantidade
+                  Quantidade:{" "}
                   <small>
                     {pedido.quantidade} {pedido.produto.nome}
                   </small>
                 </li>
                 <li>
-                  Valor <small>{pedido.valorTotal} R$</small>
+                  Valor: <small>{pedido.valorTotal} R$</small>
                 </li>
                 <li>
                   Endereço
@@ -152,13 +169,13 @@ export default function Pedidos() {
                     return (
                       <ul key={end._id}>
                         <li>
-                          Rua <small>{end.rua}</small>
+                          Rua: <small>{end.rua}</small>
                         </li>
                         <li>
-                          Bairro <small>{end.bairro}</small>
+                          Bairro: <small>{end.bairro}</small>
                         </li>
                         <li>
-                          Número <small>{end.numeroCasa}</small>
+                          Número: <small>{end.numeroCasa}</small>
                         </li>
                       </ul>
                     );
