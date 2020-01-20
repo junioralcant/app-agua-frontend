@@ -6,6 +6,7 @@ import SingIn from "./pages/SignIn";
 import Main from "./pages/Main";
 import Financeiro from "./pages/Financeiro";
 import Produto from "./components/CadProduto";
+import PedidoParaEntrega from "./pages/PedidoParaEntrega";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -31,6 +32,7 @@ const Routes = () => (
       <PrivateRoute path="/financeiro" component={Financeiro} />
       <PrivateRoute exact path="/produto" component={Produto} />
       <PrivateRoute path="/produto/edit/:id" component={Produto} />
+      <PrivateRoute path="/pedidosparaentrega" component={PedidoParaEntrega} />
     </Switch>
   </BrowserRouter>
 );

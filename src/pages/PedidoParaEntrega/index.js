@@ -1,15 +1,14 @@
 import React from "react";
-
-import Pedidos from "../../components/Pedidos";
+import PedidosParaEntrega from "../../components/PedidosParaEntrega";
 import Sidebar from "../../components/Sidebar";
 
 import { Container } from "./styles";
 
-export default function Main() {
+export default function PedidoParaEntrega() {
   return (
     <Container>
       <Sidebar />
-      <Pedidos />
+      <PedidosParaEntrega />
     </Container>
   );
 }

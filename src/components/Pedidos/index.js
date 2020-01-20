@@ -35,7 +35,7 @@ export default function Pedidos({ match }) {
   }, [numberPage]);
 
   useEffect(() => {
-    const socket = io("http://localhost:3001");
+    const socket = io("https://api-appagua.herokuapp.com/");
 
     socket.on("createPedido", message => {
       async function load() {
