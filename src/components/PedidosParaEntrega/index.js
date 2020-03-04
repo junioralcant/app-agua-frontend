@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { pt } from "date-fns/locale/pt";
-import { IoMdTrash } from "react-icons/io";
+import { IoMdBicycle } from "react-icons/io";
 import io from "socket.io-client";
 
 import api from "../../services/api";
@@ -29,7 +29,7 @@ export default function PedidosParaEntrega({ match }) {
   }, []);
 
   useEffect(() => {
-    const socket = io("http://localhost:3001");
+    const socket = io("https://api-appagua.herokuapp.com/");
 
     socket.on("createPedido", message => {
       async function load() {
@@ -91,7 +91,7 @@ export default function PedidosParaEntrega({ match }) {
                       update(pedido._id);
                   }}
                 >
-                  <IoMdTrash />
+                  <IoMdBicycle size={25} />
                 </button>
                 <strong>{pedido.cliente.nome}</strong>
                 <small>{dataPedido}</small>

@@ -35,7 +35,7 @@ export default function Pedidos({ match }) {
   }, [numberPage]);
 
   useEffect(() => {
-    const socket = io("https://api-appagua.herokuapp.com/");
+    const socket = io("http://172.17.0.1:3001");
 
     socket.on("createPedido", message => {
       async function load() {
@@ -135,7 +135,55 @@ export default function Pedidos({ match }) {
             locale: pt
           });
 
-          return (
+          return pedido.entregue === false ? (
+            <PedidosList naoEntregue key={pedido._id}>
+              <header>
+                <button
+                  onClick={e => {
+                    if (
+                      window.confirm(
+                        `Deseja realmente deletar o pedido do(a) cliente ${pedido.cliente.nome}?`
+                      )
+                    )
+                      destroy(pedido._id);
+                  }}
+                >
+                  <IoMdTrash />
+                </button>
+                <strong>{pedido.cliente.nome}</strong>
+                <small>{dataPedido}</small>
+              </header>
+              <ul>
+                <li>
+                  Quantidade:{" "}
+                  <small>
+                    {pedido.quantidade} {pedido.produto.nome}
+                  </small>
+                </li>
+                <li>
+                  Valor: <small>{pedido.valorTotal} R$</small>
+                </li>
+                <li>
+                  Endereço
+                  {pedido.enderecoEntrega.map(end => {
+                    return (
+                      <ul key={end._id}>
+                        <li>
+                          Rua: <small>{end.rua}</small>
+                        </li>
+                        <li>
+                          Bairro: <small>{end.bairro}</small>
+                        </li>
+                        <li>
+                          Número: <small>{end.numeroCasa}</small>
+                        </li>
+                      </ul>
+                    );
+                  })}
+                </li>
+              </ul>
+            </PedidosList>
+          ) : (
             <PedidosList key={pedido._id}>
               <header>
                 <button

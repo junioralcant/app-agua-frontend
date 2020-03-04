@@ -64,36 +64,16 @@ export const PedidosList = styled.div`
   display: flex;
   flex-direction: column;
 
-  &:nth-child(-n + 1) {
-    header {
-      background: #63f5b0;
-      color: #000;
-
-      button {
-        color: #000;
-        transition: 0.15s ease;
-
-        &:hover {
-          color: #646262;
-        }
-      }
-
-      small {
-        color: #000;
-      }
-    }
-  }
-
   header {
-    background: #7289da;
-    color: #fff;
+    background: #63f5b0;
+    color: #000;
     padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
 
     button {
-      color: #fff;
+      color: #000;
       background: none;
       border: none;
       font-size: 16px;
@@ -109,7 +89,7 @@ export const PedidosList = styled.div`
 
     small {
       font-size: 14px;
-      color: #fff;
+      color: #000;
     }
   }
 
