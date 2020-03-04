@@ -15,8 +15,12 @@ import {
   Dados
 } from "./styles";
 
+import Soud from "../../audios/Soud.mp3";
+
 export default function PedidosParaEntrega({ match }) {
   const [pedidos, setPedidos] = useState([]);
+
+  const audio = new Audio(Soud);
 
   useEffect(() => {
     async function loadPedidos() {
@@ -36,11 +40,12 @@ export default function PedidosParaEntrega({ match }) {
         const response = await api.get(`/pedidosnaoentregues`);
 
         setPedidos(response.data);
+        audio.play();
       }
 
       load();
     });
-  }, []);
+  }, [audio]);
 
   async function update(id) {
     await api.put(`/pedidosnaoentregues/${id}`, { entregue: true });

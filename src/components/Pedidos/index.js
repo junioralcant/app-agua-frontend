@@ -15,6 +15,8 @@ import {
   Dados
 } from "./styles";
 
+import Soud from "../../audios/Soud.mp3";
+
 export default function Pedidos({ match }) {
   const [pedidos, setPedidos] = useState([]);
   const [pedidosInfo, setPedidosInfo] = useState([]);
@@ -34,8 +36,10 @@ export default function Pedidos({ match }) {
     loadPedidos();
   }, [numberPage]);
 
+  const audio = new Audio(Soud);
+
   useEffect(() => {
-    const socket = io("http://172.17.0.1:3001");
+    const socket = io("https://api-appagua.herokuapp.com/");
 
     socket.on("createPedido", message => {
       async function load() {
@@ -44,11 +48,12 @@ export default function Pedidos({ match }) {
 
         setPedidos(docs);
         setPedidosInfo(pedidoResto);
+        audio.play();
       }
 
       load();
     });
-  }, []);
+  }, [audio]);
 
   async function filterNome(e) {
     if (e.target.value !== "") {
