@@ -6,13 +6,14 @@ import io from "socket.io-client";
 
 import api from "../../services/api";
 
+import PushNotification from "../../utils/PushNotification";
+
 import {
   Container,
   ContainerPedidos,
   PedidosList,
   Pesquisa,
-  Footer,
-  Dados
+  Footer
 } from "./styles";
 
 import Soud from "../../audios/Soud.mp3";
@@ -94,6 +95,11 @@ export default function PedidosParaEntrega({ match }) {
                       )
                     )
                       update(pedido._id);
+
+                    PushNotification.pushNotification(
+                      pedido.userOneSignalId,
+                      "Seu pedido saiu para entrega."
+                    );
                   }}
                 >
                   <IoMdBicycle size={25} />
