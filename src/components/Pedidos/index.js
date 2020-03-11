@@ -6,6 +6,8 @@ import io from "socket.io-client";
 
 import api from "../../services/api";
 
+import PushNotification from "../../utils/PushNotification";
+
 import {
   Container,
   ContainerPedidos,
@@ -111,6 +113,8 @@ export default function Pedidos({ match }) {
     setNumberPage(numberOfPages);
   }
 
+  console.log(pedidos);
+
   return (
     <Container>
       <Pesquisa>
@@ -151,6 +155,10 @@ export default function Pedidos({ match }) {
                       )
                     )
                       destroy(pedido._id);
+                    PushNotification.pushNotification(
+                      pedido.userOneSignalId,
+                      "Seu pedido foi cancelado."
+                    );
                   }}
                 >
                   <IoMdTrash />

@@ -3,7 +3,10 @@ import { format } from "date-fns";
 import { pt } from "date-fns/locale/pt";
 import { IoMdTrash } from "react-icons/io";
 
+import PushNotification from "../../utils/PushNotification";
+
 import api from "../../services/api";
+
 import {
   Container,
   ContainerPedidos,
@@ -156,6 +159,10 @@ export default function Pedidos() {
                       )
                     )
                       destroy(pedido._id);
+                    PushNotification.pushNotification(
+                      pedido.userOneSignalId,
+                      "Seu pedido foi cancelado."
+                    );
                   }}
                 >
                   <IoMdTrash />
